@@ -8,7 +8,7 @@ public class Loader {
 
     public static void main(String[] args) {
 //        printLoaderClass();
-//        categoryModule();
+        categoryModule();
     }
 
     public static void categoryModule() {
