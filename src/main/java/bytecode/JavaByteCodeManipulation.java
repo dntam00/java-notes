@@ -11,8 +11,8 @@ import java.io.*;
 public class JavaByteCodeManipulation {
 
     public static void main(String[] args) {
-//        buildByteCodeFile();
-        parseByteCode();
+        buildByteCodeFile();
+//        parseByteCode();
     }
 
     private static void buildByteCodeFile() {
