@@ -47,7 +47,17 @@
       <dependency>
           <groupId>io.netty</groupId>
           <artifactId>netty-all</artifactId>
-          <version>4.1.119.Final</version>
+          <version>4.2.3.Final</version>
+      </dependency>
+      <dependency>
+          <groupId>io.netty</groupId>
+          <artifactId>netty-transport-native-kqueue</artifactId>
+          <version>4.2.3.Final</version>
+      </dependency>
+      <dependency>
+          <groupId>ch.qos.logback</groupId>
+          <artifactId>logback-classic</artifactId>
+          <version>1.4.11</version>
       </dependency>
   </dependencies>
 
