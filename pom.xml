@@ -39,6 +39,16 @@
       <artifactId>slf4j-simple</artifactId>
       <version>1.7.26</version>
     </dependency>
+    <dependency>
+      <groupId>org.openjdk.jol</groupId>
+      <artifactId>jol-core</artifactId>
+      <version>0.17</version>
+    </dependency>
+      <dependency>
+          <groupId>io.netty</groupId>
+          <artifactId>netty-all</artifactId>
+          <version>4.1.119.Final</version>
+      </dependency>
   </dependencies>
 
   <build>
