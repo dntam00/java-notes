@@ -11,6 +11,8 @@ import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 import io.netty.handler.codec.http.websocketx.WebSocketServerProtocolHandler;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.concurrent.ThreadFactory;
+
 @Slf4j
 public class SocketServer {
 
@@ -18,7 +20,15 @@ public class SocketServer {
         int port = 8082;
 
         EventLoopGroup bossGroup = new MultiThreadIoEventLoopGroup(1, KQueueIoHandler.newFactory());
-        EventLoopGroup workerGroup = new MultiThreadIoEventLoopGroup(20, KQueueIoHandler.newFactory());
+        IoHandlerFactory ioHandlerFactory = KQueueIoHandler.newFactory();
+
+        ThreadFactory workerThreadFactory = r -> {
+            Thread t = new Thread(r);
+            t.setName("kaixin-worker-thread-" + t.getId());
+            return t;
+        };
+
+        EventLoopGroup workerGroup = new MultiThreadIoEventLoopGroup(20, workerThreadFactory, ioHandlerFactory);
         try {
             ServerBootstrap b = new ServerBootstrap();
             b.group(bossGroup, workerGroup)
