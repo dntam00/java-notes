@@ -12,8 +12,12 @@ import io.netty.util.internal.logging.InternalLoggerFactory;
 import io.netty.util.internal.logging.Slf4JLoggerFactory;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.concurrent.TimeUnit;
+
 @Slf4j
 public class HttpNettyServer {
+
+    private static final int SO_BACKLOG = 2;
 
     public static void main(String[] args) throws Exception {
 
@@ -35,6 +39,7 @@ public class HttpNettyServer {
             ServerBootstrap b = new ServerBootstrap();
             b.group(bossGroup, workerGroup)
              .channel(KQueueServerSocketChannel.class) // Use NIO for macOS
+             .option(ChannelOption.SO_BACKLOG, SO_BACKLOG)
              .childHandler(new ChannelInitializer<SocketChannel>() {
                  @Override
                  protected void initChannel(SocketChannel ch) {
@@ -72,6 +77,17 @@ public class HttpNettyServer {
                      throw new RuntimeException("Channel exception", cause);
                  }
              });
+
+
+            bossGroup.scheduleAtFixedRate(() -> {
+                try {
+                    log.info("Boss thread is busy doing simulated work...");
+                    // This sleep will block the single boss thread, preventing it from accepting connections.
+                    Thread.sleep(5000); // 5 seconds of "work"
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                }
+            }, 1, 1, TimeUnit.SECONDS); // Start after 1 sec, repeat every 1 sec
 
             ChannelFuture f = b.bind(8081).sync();
             System.out.println("HTTP server started on port 8081");
